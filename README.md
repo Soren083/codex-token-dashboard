@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="assets/hero.png" alt="Codex Token Dashboard hero image" width="100%">
-</p>
-
 <h1 align="center">Codex Token Dashboard</h1>
 
 <p align="center">
@@ -9,10 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-10a37f"></a>
-  <img alt="Node.js >=18" src="https://img.shields.io/badge/node-%3E%3D18-202123">
-  <img alt="Runtime dependencies: none" src="https://img.shields.io/badge/runtime_deps-0-10a37f">
-  <img alt="Local first" src="https://img.shields.io/badge/local_first-yes-0e8f70">
+  MIT licensed / Node.js 18+ / zero runtime dependencies / local-first
 </p>
 
 ---
