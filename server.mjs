@@ -809,6 +809,9 @@ function htmlPage() {
       --shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
     * { box-sizing: border-box; }
+    html {
+      overflow-x: hidden;
+    }
     body {
       margin: 0;
       background: var(--bg);
@@ -816,6 +819,7 @@ function htmlPage() {
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 14px;
       line-height: 1.5;
+      overflow-x: hidden;
     }
     header {
       border-bottom: 1px solid var(--line);
@@ -852,7 +856,8 @@ function htmlPage() {
       flex-wrap: wrap;
       justify-content: flex-end;
     }
-    .range-segment {
+    .range-segment,
+    .lang-segment {
       display: inline-flex;
       align-items: center;
       gap: 2px;
@@ -862,7 +867,8 @@ function htmlPage() {
       background: #ececea;
       border: 1px solid #e2e2de;
     }
-    .range-button {
+    .range-button,
+    .lang-button {
       border: 0;
       background: transparent;
       color: #5f5f5b;
@@ -873,7 +879,8 @@ function htmlPage() {
       font-weight: 600;
       cursor: pointer;
     }
-    .range-button.is-active {
+    .range-button.is-active,
+    .lang-button.is-active {
       background: #ffffff;
       color: var(--text);
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
@@ -1121,6 +1128,7 @@ function htmlPage() {
       background: var(--panel);
       box-shadow: var(--shadow);
       overflow: hidden;
+      max-width: 100%;
     }
     .table-wrap {
       overflow: auto;
@@ -1305,43 +1313,47 @@ function htmlPage() {
     <div class="bar">
       <div>
         <h1>Codex Token Dashboard</h1>
-        <div class="brand-sub">Local usage and estimated cost</div>
+        <div class="brand-sub" data-i18n="brandSub">本地用量与预估费用</div>
       </div>
       <div class="controls">
         <div class="range-segment" id="rangeSegment" aria-label="Range">
-          <button class="range-button" type="button" data-range="today">今天</button>
-          <button class="range-button" type="button" data-range="7d">7 天</button>
-          <button class="range-button" type="button" data-range="30d">30 天</button>
-          <button class="range-button" type="button" data-range="all">全部</button>
+          <button class="range-button" type="button" data-range="today" data-i18n="rangeToday">今天</button>
+          <button class="range-button" type="button" data-range="7d" data-i18n="range7d">7 天</button>
+          <button class="range-button" type="button" data-range="30d" data-i18n="range30d">30 天</button>
+          <button class="range-button" type="button" data-range="all" data-i18n="rangeAll">全部</button>
         </div>
-        <button id="refresh" class="primary" type="button">刷新</button>
+        <div class="lang-segment" id="langSegment" aria-label="Language">
+          <button class="lang-button" type="button" data-lang="zh">中文</button>
+          <button class="lang-button" type="button" data-lang="en">EN</button>
+        </div>
+        <button id="refresh" class="primary" type="button" data-i18n="refresh">刷新</button>
       </div>
     </div>
   </header>
   <main>
     <div class="hero">
       <div>
-        <p class="eyebrow" id="rangeLabel">Today</p>
-        <h2 class="hero-title">清晰查看 Codex 用量。</h2>
+        <p class="eyebrow" id="rangeLabel">今天</p>
+        <h2 class="hero-title" data-i18n="heroTitle">清晰查看 Codex 用量。</h2>
       </div>
       <div class="hero-meta" id="meta">加载中...</div>
     </div>
 
     <div class="overview">
-      <div class="metric"><div class="label">Estimated cost</div><div class="value" id="totalCost">-</div><div class="sub" id="costSub">-</div></div>
-      <div class="metric"><div class="label">Total tokens</div><div class="value" id="totalTokens">-</div><div class="sub" id="tokenSub">-</div></div>
-      <div class="metric"><div class="label">Input</div><div class="value" id="inputTokens">-</div><div class="sub" id="cachedTokens">-</div></div>
-      <div class="metric"><div class="label">Output</div><div class="value" id="outputTokens">-</div><div class="sub" id="reasoningTokens">-</div></div>
+      <div class="metric"><div class="label" data-i18n="estimatedCost">预估费用</div><div class="value" id="totalCost">-</div><div class="sub" id="costSub">-</div></div>
+      <div class="metric"><div class="label" data-i18n="totalTokens">总消耗量</div><div class="value" id="totalTokens">-</div><div class="sub" id="tokenSub">-</div></div>
+      <div class="metric"><div class="label" data-i18n="input">输入</div><div class="value" id="inputTokens">-</div><div class="sub" id="cachedTokens">-</div></div>
+      <div class="metric"><div class="label" data-i18n="output">输出</div><div class="value" id="outputTokens">-</div><div class="sub" id="reasoningTokens">-</div></div>
     </div>
 
     <section>
       <div class="section-title">
-        <h2>每日日历</h2>
+        <h2 data-i18n="calendarTitle">每日日历</h2>
         <div class="calendar-title-actions">
           <span class="section-note" id="calendarNote"></span>
           <div class="calendar-switch" aria-label="Calendar metric">
-            <button class="calendar-mode-button" type="button" data-calendar-mode="tokens">消耗量</button>
-            <button class="calendar-mode-button" type="button" data-calendar-mode="cost">费用</button>
+            <button class="calendar-mode-button" type="button" data-calendar-mode="tokens" data-i18n="calendarTokens">消耗量</button>
+            <button class="calendar-mode-button" type="button" data-calendar-mode="cost" data-i18n="calendarCost">费用</button>
           </div>
         </div>
       </div>
@@ -1355,14 +1367,14 @@ function htmlPage() {
 
     <div class="section-grid">
       <section>
-        <div class="section-title"><h2>模型成本</h2><span class="section-note" id="modelNote"></span></div>
+        <div class="section-title"><h2 data-i18n="modelCost">模型成本</h2><span class="section-note" id="modelNote"></span></div>
         <div class="panel">
           <div class="table-wrap"><table id="modelTable"></table></div>
         </div>
       </section>
 
       <section>
-        <div class="section-title"><h2>分布</h2><span class="section-note" id="distributionNote"></span></div>
+        <div class="section-title"><h2 data-i18n="distribution">分布</h2><span class="section-note" id="distributionNote"></span></div>
         <div class="panel">
           <div id="modelCards" class="model-card-list"></div>
           <div class="summary-list" id="summaryList"></div>
@@ -1371,7 +1383,7 @@ function htmlPage() {
     </div>
 
     <section>
-      <div class="section-title"><h2>最近会话</h2><span class="section-note" id="sessionNote"></span></div>
+      <div class="section-title"><h2 data-i18n="recentSessions">最近会话</h2><span class="section-note" id="sessionNote"></span></div>
       <div class="panel">
         <div class="table-wrap"><table id="sessionTable"></table></div>
       </div>
@@ -1379,23 +1391,144 @@ function htmlPage() {
     <p class="footer-note" id="footerNote"></p>
   </main>
   <script>
-    const fmt = new Intl.NumberFormat('en-US');
-    const compactFmt = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
-    const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 4, maximumFractionDigits: 4 });
-    const shortMoney = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const I18N = {
+      zh: {
+        pageTitle: 'Codex Token Dashboard',
+        brandSub: '本地用量与预估费用',
+        rangeAria: '时间范围',
+        languageAria: '语言',
+        calendarMetricAria: '日历指标',
+        rangeToday: '今天',
+        range7d: '7 天',
+        range30d: '30 天',
+        rangeAll: '全部',
+        refresh: '刷新',
+        refreshing: '刷新中...',
+        loading: '加载中...',
+        loadFailed: '加载失败：',
+        heroTitle: '清晰查看 Codex 用量。',
+        estimatedCost: '预估费用',
+        totalTokens: '总消耗量',
+        input: '输入',
+        output: '输出',
+        calendarTitle: '每日日历',
+        calendarTokens: '消耗量',
+        calendarCost: '费用',
+        modelCost: '模型成本',
+        distribution: '分布',
+        recentSessions: '最近会话',
+        rangeLabelToday: '今天',
+        rangeLabel7d: '最近 7 天',
+        rangeLabel30d: '最近 30 天',
+        rangeLabelAll: '全部',
+        sessionsUnit: '个会话',
+        eventsUnit: '个事件',
+        filesScanned: '已扫描 {scanned} 个文件',
+        filesScannedOf: '已扫描 {scanned} / {total} 个文件',
+        updated: '更新于',
+        totalSub: '总计',
+        cachedSub: '缓存输入',
+        reasoningSub: '推理输出',
+        standardRates: 'OpenAI 标准费率',
+        pricingLink: 'OpenAI 价格',
+        topSessions: '前 {count} 个会话',
+        tableModel: '模型',
+        tableTokens: '消耗量',
+        tableCost: '费用',
+        tableStatus: '状态',
+        tableSession: '会话',
+        priced: '已计价',
+        unpriced: '未计价',
+        estimated: '估算',
+        tokensUnit: 'tokens',
+        peak: '峰值',
+        noRecords: '无记录',
+        summaryLatestDay: '最新日期',
+        summaryDayCost: '当日费用',
+        summaryInputTokens: '输入 tokens',
+        summaryCachedInput: '缓存输入',
+        summaryOutputTokens: '输出 tokens',
+        outputNote: 'reasoning_output_tokens 会单独展示，但不会重复计费，因为输出计费用的是 output_tokens。',
+        weekdays: ['日', '一', '二', '三', '四', '五', '六'],
+      },
+      en: {
+        pageTitle: 'Codex Token Dashboard',
+        brandSub: 'Local usage and estimated cost',
+        rangeAria: 'Range',
+        languageAria: 'Language',
+        calendarMetricAria: 'Calendar metric',
+        rangeToday: 'Today',
+        range7d: '7 days',
+        range30d: '30 days',
+        rangeAll: 'All',
+        refresh: 'Refresh',
+        refreshing: 'Refreshing...',
+        loading: 'Loading...',
+        loadFailed: 'Failed to load: ',
+        heroTitle: 'See your Codex usage clearly.',
+        estimatedCost: 'Estimated cost',
+        totalTokens: 'Total tokens',
+        input: 'Input',
+        output: 'Output',
+        calendarTitle: 'Daily calendar',
+        calendarTokens: 'Usage',
+        calendarCost: 'Cost',
+        modelCost: 'Model cost',
+        distribution: 'Distribution',
+        recentSessions: 'Recent sessions',
+        rangeLabelToday: 'Today',
+        rangeLabel7d: 'Last 7 days',
+        rangeLabel30d: 'Last 30 days',
+        rangeLabelAll: 'All time',
+        sessionsUnit: 'sessions',
+        eventsUnit: 'events',
+        filesScanned: '{scanned} files scanned',
+        filesScannedOf: '{scanned} of {total} files scanned',
+        updated: 'Updated',
+        totalSub: 'total',
+        cachedSub: 'cached',
+        reasoningSub: 'reasoning',
+        standardRates: 'OpenAI Standard rates',
+        pricingLink: 'OpenAI pricing',
+        topSessions: 'Top {count} sessions',
+        tableModel: 'Model',
+        tableTokens: 'Tokens',
+        tableCost: 'Cost',
+        tableStatus: 'Status',
+        tableSession: 'Session',
+        priced: 'priced',
+        unpriced: 'unpriced',
+        estimated: 'estimated',
+        tokensUnit: 'tokens',
+        peak: 'Peak',
+        noRecords: 'No records',
+        summaryLatestDay: 'Latest day',
+        summaryDayCost: 'Day cost',
+        summaryInputTokens: 'Input tokens',
+        summaryCachedInput: 'Cached input',
+        summaryOutputTokens: 'Output tokens',
+        outputNote: 'reasoning_output_tokens is displayed separately, but it is not added again because output_tokens is used for output billing.',
+        weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      },
+    };
+    const RANGES = ['today', '7d', '30d', 'all'];
+    const LANGS = ['zh', 'en'];
     const state = {
-      range: localStorage.getItem('codexTokenRange') || 'today',
-      calendarMode: localStorage.getItem('codexCalendarMetric') || 'tokens',
-      latestData: null
+      range: normalizeRange(readStorage('codexTokenRange', 'today')),
+      calendarMode: readStorage('codexCalendarMetric', 'tokens') === 'cost' ? 'cost' : 'tokens',
+      lang: normalizeLang(readStorage('codexTokenLanguage', 'zh')),
+      latestData: null,
+      loading: false
     };
     let loadController = null;
     let loadSeq = 0;
     const rangeButtons = Array.from(document.querySelectorAll('.range-button'));
     const calendarModeButtons = Array.from(document.querySelectorAll('.calendar-mode-button'));
+    const langButtons = Array.from(document.querySelectorAll('.lang-button'));
     rangeButtons.forEach(button => {
       button.addEventListener('click', () => {
         state.range = button.dataset.range;
-        localStorage.setItem('codexTokenRange', state.range);
+        writeStorage('codexTokenRange', state.range);
         syncRangeButtons();
         load({ force: true });
       });
@@ -1403,13 +1536,47 @@ function htmlPage() {
     calendarModeButtons.forEach(button => {
       button.addEventListener('click', () => {
         state.calendarMode = button.dataset.calendarMode;
-        localStorage.setItem('codexCalendarMetric', state.calendarMode);
+        writeStorage('codexCalendarMetric', state.calendarMode);
         syncCalendarButtons();
         if (state.latestData) renderCalendar(state.latestData);
       });
     });
+    langButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        state.lang = normalizeLang(button.dataset.lang);
+        writeStorage('codexTokenLanguage', state.lang);
+        applyLanguage();
+      });
+    });
     document.getElementById('refresh').addEventListener('click', () => load({ force: true }));
 
+    function readStorage(key, fallback) {
+      try {
+        return localStorage.getItem(key) || fallback;
+      } catch {
+        return fallback;
+      }
+    }
+    function writeStorage(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch {}
+    }
+    function normalizeRange(value) {
+      return RANGES.includes(value) ? value : 'today';
+    }
+    function normalizeLang(value) {
+      return LANGS.includes(value) ? value : 'zh';
+    }
+    function locale() {
+      return state.lang === 'en' ? 'en-US' : 'zh-CN';
+    }
+    function t(key) {
+      return (I18N[state.lang] && I18N[state.lang][key]) || I18N.en[key] || key;
+    }
+    function template(key, values) {
+      return t(key).replace(/\\{(\\w+)\\}/g, (_, name) => values[name] ?? '');
+    }
     function syncRangeButtons() {
       rangeButtons.forEach(button => button.classList.toggle('is-active', button.dataset.range === state.range));
     }
@@ -1417,13 +1584,45 @@ function htmlPage() {
       calendarModeButtons.forEach(button => button.classList.toggle('is-active', button.dataset.calendarMode === state.calendarMode));
       document.getElementById('calendarPanel').dataset.mode = state.calendarMode;
     }
-    function n(value) { return fmt.format(value || 0); }
-    function compact(value) { return compactFmt.format(value || 0); }
-    function usd(value) { return value >= 100 ? shortMoney.format(value || 0) : money.format(value || 0); }
-    function dateTime(value) { return value ? new Date(value).toLocaleString() : '-'; }
+    function syncLangButtons() {
+      langButtons.forEach(button => button.classList.toggle('is-active', button.dataset.lang === state.lang));
+    }
+    function applyLanguage() {
+      document.documentElement.lang = state.lang === 'en' ? 'en' : 'zh-CN';
+      document.title = t('pageTitle');
+      document.querySelectorAll('[data-i18n]').forEach(element => {
+        element.textContent = t(element.dataset.i18n);
+      });
+      document.getElementById('rangeSegment').setAttribute('aria-label', t('rangeAria'));
+      document.getElementById('langSegment').setAttribute('aria-label', t('languageAria'));
+      document.querySelector('.calendar-switch').setAttribute('aria-label', t('calendarMetricAria'));
+      syncLangButtons();
+      document.getElementById('refresh').textContent = state.loading ? t('refreshing') : t('refresh');
+      if (state.latestData) {
+        render(state.latestData);
+      } else {
+        document.getElementById('rangeLabel').textContent = rangeLabel(state.range);
+        document.getElementById('meta').textContent = t('loading');
+      }
+    }
+    function n(value) {
+      return new Intl.NumberFormat('en-US').format(value || 0);
+    }
+    function compact(value) {
+      return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value || 0);
+    }
+    function usd(value) {
+      const options = value >= 100
+        ? { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        : { style: 'currency', currency: 'USD', minimumFractionDigits: 4, maximumFractionDigits: 4 };
+      return new Intl.NumberFormat('en-US', options).format(value || 0);
+    }
     function shortDateTime(value) {
       if (!value) return '-';
-      return new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(value));
+      const options = state.lang === 'en'
+        ? { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+        : { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+      return new Intl.DateTimeFormat(locale(), options).format(new Date(value));
     }
     function dayModels(models) { return (models || []).slice(0, 3).map(item => item.model).join(', ') || '-'; }
     function escapeHtml(value) {
@@ -1431,8 +1630,8 @@ function htmlPage() {
     }
     function costNote(cost) {
       const notes = [];
-      if (cost?.unpricedEvents) notes.push('<span class="warn-pill">' + cost.unpricedEvents + ' unpriced</span>');
-      if (cost?.estimatedEvents) notes.push('<span class="pill">' + cost.estimatedEvents + ' estimated</span>');
+      if (cost?.unpricedEvents) notes.push('<span class="warn-pill">' + n(cost.unpricedEvents) + ' ' + t('unpriced') + '</span>');
+      if (cost?.estimatedEvents) notes.push('<span class="pill">' + n(cost.estimatedEvents) + ' ' + t('estimated') + '</span>');
       return notes.join(' · ');
     }
     function modelShare(row, data) {
@@ -1441,9 +1640,15 @@ function htmlPage() {
     }
     function filesScanned(data) {
       if (data.totalFiles && data.totalFiles !== data.scannedFiles) {
-        return n(data.scannedFiles) + ' of ' + n(data.totalFiles) + ' files scanned';
+        return template('filesScannedOf', { scanned: n(data.scannedFiles), total: n(data.totalFiles) });
       }
-      return n(data.scannedFiles) + ' files scanned';
+      return template('filesScanned', { scanned: n(data.scannedFiles) });
+    }
+    function rangeLabel(range) {
+      if (range === '7d') return t('rangeLabel7d');
+      if (range === '30d') return t('rangeLabel30d');
+      if (range === 'all') return t('rangeLabelAll');
+      return t('rangeLabelToday');
     }
     function parseDayKey(value) {
       if (!value) return null;
@@ -1465,7 +1670,8 @@ function htmlPage() {
     }
     function dayLabel(key) {
       const date = parseDayKey(key);
-      return date ? new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric' }).format(date) : key;
+      const options = state.lang === 'en' ? { month: 'short', day: 'numeric' } : { month: 'numeric', day: 'numeric' };
+      return date ? new Intl.DateTimeFormat(locale(), options).format(date) : key;
     }
     function calendarRange(data) {
       const today = new Date();
@@ -1487,7 +1693,7 @@ function htmlPage() {
     }
     function calendarSubText(row) {
       if (!row) return '';
-      return state.calendarMode === 'cost' ? n(row.totals.totalTokens) + ' tokens' : usd(row.cost.totalUsd);
+      return state.calendarMode === 'cost' ? n(row.totals.totalTokens) + ' ' + t('tokensUnit') : usd(row.cost.totalUsd);
     }
     function calendarLevel(value, maxValue) {
       if (!value || !maxValue) return 0;
@@ -1499,8 +1705,7 @@ function htmlPage() {
       return 1;
     }
     function renderCalendar(data) {
-      const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-      document.getElementById('calendarWeekdays').innerHTML = weekdays
+      document.getElementById('calendarWeekdays').innerHTML = t('weekdays')
         .map(day => '<div class="calendar-weekday">' + day + '</div>')
         .join('');
 
@@ -1520,7 +1725,7 @@ function htmlPage() {
         const row = rowsByDay.get(key);
         const value = calendarValue(row);
         const level = calendarLevel(value, maxValue);
-        const title = key + ' · ' + n(row?.totals.totalTokens || 0) + ' tokens · ' + usd(row?.cost.totalUsd || 0);
+        const title = key + ' · ' + n(row?.totals.totalTokens || 0) + ' ' + t('tokensUnit') + ' · ' + usd(row?.cost.totalUsd || 0);
         return '<div class="calendar-cell calendar-level-' + level + '" title="' + escapeHtml(title) + '">' +
           '<div class="calendar-day">' + escapeHtml(dayLabel(key)) + '</div>' +
           '<div><div class="calendar-value">' + escapeHtml(calendarValueText(value)) + '</div>' +
@@ -1529,11 +1734,11 @@ function htmlPage() {
       }).join('');
       document.getElementById('calendarGrid').innerHTML = blanks + cells;
       document.getElementById('calendarNote').textContent = maxValue
-        ? '峰值 ' + calendarValueText(maxValue) + ' · ' + dayLabel(peakKey)
-        : '无记录';
+        ? t('peak') + ' ' + calendarValueText(maxValue) + ' · ' + dayLabel(peakKey)
+        : t('noRecords');
     }
     function renderTable(id, columns, rows) {
-      const head = '<thead><tr>' + columns.map(col => '<th class="' + (col.num ? 'num' : '') + '">' + col.label + '</th>').join('') + '</tr></thead>';
+      const head = '<thead><tr>' + columns.map(col => '<th class="' + (col.num ? 'num' : '') + '">' + escapeHtml(col.label) + '</th>').join('') + '</tr></thead>';
       const body = '<tbody>' + rows.map(row => '<tr>' + columns.map(col => '<td class="' + (col.num ? 'num' : '') + '">' + col.render(row) + '</td>').join('') + '</tr>').join('') + '</tbody>';
       document.getElementById(id).innerHTML = head + body;
     }
@@ -1545,7 +1750,7 @@ function htmlPage() {
       state.loading = true;
       const button = document.getElementById('refresh');
       button.disabled = true;
-      button.textContent = '刷新中...';
+      button.textContent = t('refreshing');
       try {
         const res = await fetch('/api/metrics?range=' + encodeURIComponent(state.range), {
           cache: 'no-store',
@@ -1557,43 +1762,43 @@ function htmlPage() {
         render(data);
       } catch (error) {
         if (error.name === 'AbortError') return;
-        document.getElementById('meta').innerHTML = '<span class="warn">加载失败：' + escapeHtml(error.message || error) + '</span>';
+        document.getElementById('meta').innerHTML = '<span class="warn">' + t('loadFailed') + escapeHtml(error.message || error) + '</span>';
       } finally {
         if (seq === loadSeq) {
           state.loading = false;
           loadController = null;
           button.disabled = false;
-          button.textContent = '刷新';
+          button.textContent = t('refresh');
         }
       }
     }
     function render(data) {
       state.latestData = data;
-      document.getElementById('rangeLabel').textContent = data.rangeLabel;
+      document.getElementById('rangeLabel').textContent = rangeLabel(data.range);
       document.getElementById('meta').innerHTML = [
-        '<div><strong>' + n(data.activeSessions) + '</strong> sessions · <strong>' + n(data.eventCount) + '</strong> events</div>',
+        '<div><strong>' + n(data.activeSessions) + '</strong> ' + t('sessionsUnit') + ' · <strong>' + n(data.eventCount) + '</strong> ' + t('eventsUnit') + '</div>',
         '<div>' + filesScanned(data) + '</div>',
-        '<div>Updated ' + shortDateTime(data.generatedAt) + '</div>'
+        '<div>' + t('updated') + ' ' + shortDateTime(data.generatedAt) + '</div>'
       ].join('');
       document.getElementById('totalTokens').textContent = compact(data.totals.totalTokens);
-      document.getElementById('tokenSub').textContent = n(data.totals.totalTokens) + ' total';
+      document.getElementById('tokenSub').textContent = n(data.totals.totalTokens) + ' ' + t('totalSub');
       document.getElementById('totalCost').textContent = usd(data.cost.totalUsd);
-      document.getElementById('costSub').innerHTML = costNote(data.cost) || 'OpenAI Standard rates';
+      document.getElementById('costSub').innerHTML = costNote(data.cost) || t('standardRates');
       document.getElementById('inputTokens').textContent = compact(data.totals.inputTokens);
-      document.getElementById('cachedTokens').textContent = n(data.totals.cachedInputTokens) + ' cached';
+      document.getElementById('cachedTokens').textContent = n(data.totals.cachedInputTokens) + ' ' + t('cachedSub');
       document.getElementById('outputTokens').textContent = n(data.totals.outputTokens);
-      document.getElementById('reasoningTokens').textContent = n(data.totals.reasoningOutputTokens) + ' reasoning';
-      document.getElementById('modelNote').innerHTML = '<a href="' + data.pricing.sourceUrl + '" target="_blank" rel="noreferrer">OpenAI pricing</a>';
+      document.getElementById('reasoningTokens').textContent = n(data.totals.reasoningOutputTokens) + ' ' + t('reasoningSub');
+      document.getElementById('modelNote').innerHTML = '<a href="' + data.pricing.sourceUrl + '" target="_blank" rel="noreferrer">' + t('pricingLink') + '</a>';
       document.getElementById('distributionNote').textContent = dayModels(data.byModel.map(row => ({ model: row.key, totalTokens: row.totals.totalTokens })));
-      document.getElementById('sessionNote').textContent = 'Top ' + Math.min(data.sessions.length, 12) + ' sessions';
-      document.getElementById('footerNote').textContent = data.pricing.outputNote;
+      document.getElementById('sessionNote').textContent = template('topSessions', { count: Math.min(data.sessions.length, 12) });
+      document.getElementById('footerNote').textContent = t('outputNote');
       renderCalendar(data);
 
       renderTable('modelTable', [
-        { label: 'Model', render: row => '<span class="model-name"><span class="dot"></span>' + escapeHtml(row.key) + '</span>' },
-        { label: 'Tokens', num: true, render: row => n(row.totals.totalTokens) },
-        { label: 'Cost', num: true, render: row => usd(row.cost.totalUsd) },
-        { label: 'Status', render: row => costNote(row.cost) || '<span class="pill">priced</span>' }
+        { label: t('tableModel'), render: row => '<span class="model-name"><span class="dot"></span>' + escapeHtml(row.key) + '</span>' },
+        { label: t('tableTokens'), num: true, render: row => n(row.totals.totalTokens) },
+        { label: t('tableCost'), num: true, render: row => usd(row.cost.totalUsd) },
+        { label: t('tableStatus'), render: row => costNote(row.cost) || '<span class="pill">' + t('priced') + '</span>' }
       ], data.byModel);
 
       const maxModels = data.byModel.slice(0, 4);
@@ -1602,27 +1807,28 @@ function htmlPage() {
         return '<div class="model-card">' +
           '<div class="model-card-head"><div class="model-card-name">' + escapeHtml(row.key) + '</div><div>' + usd(row.cost.totalUsd) + '</div></div>' +
           '<div class="bar-track"><div class="bar-fill" style="width:' + share.toFixed(2) + '%"></div></div>' +
-          '<div class="card-row"><span>' + n(row.totals.totalTokens) + ' tokens</span><span>' + share.toFixed(1) + '%</span></div>' +
+          '<div class="card-row"><span>' + n(row.totals.totalTokens) + ' ' + t('tokensUnit') + '</span><span>' + share.toFixed(1) + '%</span></div>' +
         '</div>';
       }).join('');
       const latestDay = data.byDay[0];
       document.getElementById('summaryList').innerHTML = [
-        ['Latest day', latestDay ? latestDay.key : '-'],
-        ['Day cost', latestDay ? usd(latestDay.cost.totalUsd) : '-'],
-        ['Input tokens', n(data.totals.inputTokens)],
-        ['Cached input', n(data.totals.cachedInputTokens)],
-        ['Output tokens', n(data.totals.outputTokens)]
+        [t('summaryLatestDay'), latestDay ? latestDay.key : '-'],
+        [t('summaryDayCost'), latestDay ? usd(latestDay.cost.totalUsd) : '-'],
+        [t('summaryInputTokens'), n(data.totals.inputTokens)],
+        [t('summaryCachedInput'), n(data.totals.cachedInputTokens)],
+        [t('summaryOutputTokens'), n(data.totals.outputTokens)]
       ].map(item => '<div class="summary-row"><div class="summary-k">' + item[0] + '</div><div class="summary-v">' + item[1] + '</div></div>').join('');
 
       renderTable('sessionTable', [
-        { label: 'Session', render: row => '<div class="title-cell" title="' + escapeHtml(row.title) + '">' + escapeHtml(row.title) + '</div><div class="session-sub">' + escapeHtml(shortDateTime(row.startedAt)) + ' · ' + escapeHtml(row.originator || row.source || '-') + '</div>' },
-        { label: 'Model', render: row => escapeHtml(row.model) },
-        { label: 'Tokens', num: true, render: row => n(row.totals.totalTokens) },
-        { label: 'Cost', num: true, render: row => usd(row.cost.totalUsd) }
+        { label: t('tableSession'), render: row => '<div class="title-cell" title="' + escapeHtml(row.title) + '">' + escapeHtml(row.title) + '</div><div class="session-sub">' + escapeHtml(shortDateTime(row.startedAt)) + ' · ' + escapeHtml(row.originator || row.source || '-') + '</div>' },
+        { label: t('tableModel'), render: row => escapeHtml(row.model) },
+        { label: t('tableTokens'), num: true, render: row => n(row.totals.totalTokens) },
+        { label: t('tableCost'), num: true, render: row => usd(row.cost.totalUsd) }
       ], data.sessions.slice(0, 12));
     }
     syncRangeButtons();
     syncCalendarButtons();
+    applyLanguage();
     load();
     setInterval(load, 30000);
   </script>
