@@ -1,23 +1,50 @@
-# Codex Token Dashboard
+<p align="center">
+  <img src="assets/hero.png" alt="Codex Token Dashboard hero image" width="100%">
+</p>
 
-Local dashboard for Codex Desktop and Codex CLI token usage.
+<h1 align="center">Codex Token Dashboard</h1>
 
-It reads local Codex session logs from `~/.codex/sessions/**/*.jsonl`, groups usage by session, model, and day, then estimates cost from the configured pricing table.
+<p align="center">
+  A local dashboard for seeing your Codex token usage, daily burn, and estimated cost.
+</p>
 
-## Features
+<p align="center">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-10a37f"></a>
+  <img alt="Node.js >=18" src="https://img.shields.io/badge/node-%3E%3D18-202123">
+  <img alt="Runtime dependencies: none" src="https://img.shields.io/badge/runtime_deps-0-10a37f">
+  <img alt="Local first" src="https://img.shields.io/badge/local_first-yes-0e8f70">
+</p>
 
-- Token and estimated cost overview
-- Daily calendar heatmap with token/cost toggle
-- Model-level cost breakdown
-- Recent session table
-- Date ranges: today, 7 days, 30 days, and all time
-- Local-only HTTP server with no runtime dependencies
-- Optional macOS LaunchAgent service
+---
 
-## Requirements
+Codex Token Dashboard reads your local Codex Desktop / Codex CLI session logs and turns them into a small dashboard you can check every day.
 
-- Node.js 18 or newer
-- Local Codex session logs under `~/.codex/sessions`
+It is built for the simple question: **how much am I actually using Codex, and what does that roughly cost?**
+
+<p align="center">
+  <img src="assets/dashboard-calendar.png" alt="Codex Token Dashboard showing 30 days of token usage and estimated cost" width="100%">
+</p>
+
+## What You Get
+
+| View | What it shows |
+| --- | --- |
+| Overview | Estimated cost, total tokens, input, cached input, output, and reasoning output |
+| Daily calendar | A heatmap of each day's token usage or estimated cost |
+| Model breakdown | Tokens and cost grouped by model |
+| Distribution | Top model share and current range summary |
+| Recent sessions | The sessions contributing to the selected range |
+
+## Why
+
+Codex already logs enough local usage data to build a useful dashboard. The hard part is usually not the code; it is making the time to build and maintain the little tool.
+
+This project packages that daily dashboard into a local Node.js app:
+
+- no database
+- no external service
+- no runtime dependencies
+- no upload of session data
 
 ## Quick Start
 
@@ -33,9 +60,18 @@ Open:
 http://127.0.0.1:8766/
 ```
 
-## Configuration
+The app reads Codex session logs from:
 
-Environment variables:
+```text
+~/.codex/sessions
+```
+
+## Requirements
+
+- Node.js 18 or newer
+- Local Codex session logs under `~/.codex/sessions`
+
+## Configuration
 
 | Name | Default | Description |
 | --- | --- | --- |
@@ -74,9 +110,9 @@ CODEX_TOKEN_DASHBOARD_LAUNCHD_LABEL=com.example.codex-token-dashboard npm run in
 
 ## Pricing
 
-Pricing is estimated in USD per 1M tokens.
+Cost is an estimate, not an official bill.
 
-`input_tokens` includes `cached_input_tokens`, so cost is calculated as:
+Pricing is calculated in USD per 1M tokens. `input_tokens` includes `cached_input_tokens`, so the dashboard estimates cost as:
 
 ```text
 (input_tokens - cached_input_tokens) * input_rate
@@ -96,9 +132,40 @@ Use `CODEX_TOKEN_DASHBOARD_PRICING_JSON` when your local model names or pricing 
 
 ## Privacy
 
-The dashboard reads local session logs and serves the UI on `127.0.0.1` by default. It does not upload usage data anywhere.
+By default, the dashboard serves only on `127.0.0.1` and reads local files from your machine.
 
-Be careful when exposing the server on a public interface because session metadata can include local paths and prompt-derived titles.
+It does not upload usage data anywhere.
+
+Be careful when binding to a public interface. Session metadata can include local paths, prompt-derived titles, model names, and usage details.
+
+## Roadmap
+
+This project starts with Codex local logs, but the long-term direction is broader agent and API usage visibility.
+
+- [ ] Export daily usage as CSV/JSON
+- [ ] Click a calendar day to inspect that day's sessions
+- [ ] Filter by model, provider, and source
+- [ ] Generic JSONL/CSV usage import
+- [ ] Adapter interface for multiple usage sources
+- [ ] API gateway integrations such as LiteLLM, OpenRouter, Helicone, and Langfuse
+- [ ] Other desktop coding agents when local usage logs are available
+
+The useful abstraction is a shared usage record:
+
+```js
+{
+  source: "codex",
+  provider: "openai",
+  model: "gpt-5.5",
+  timestamp: "2026-06-09T08:00:00.000Z",
+  inputTokens: 1234,
+  cachedInputTokens: 1000,
+  outputTokens: 234,
+  costUsd: 0.01,
+  sessionId: "optional",
+  title: "optional"
+}
+```
 
 ## Development
 
@@ -108,6 +175,18 @@ Run checks:
 npm test
 node --check server.mjs
 ```
+
+The app intentionally has no runtime dependencies. Prefer plain Node.js and browser APIs unless a dependency clearly reduces maintenance risk.
+
+## Contributing
+
+Issues and PRs are welcome. Good contributions include:
+
+- support for another usage log format
+- improved model pricing aliases
+- better cost estimation
+- export and filtering workflows
+- UI polish that keeps the dashboard quiet and readable
 
 ## License
 
