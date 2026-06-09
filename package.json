@@ -1,0 +1,35 @@
+{
+  "name": "codex-token-dashboard",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Local Codex token usage dashboard with model and cost breakdowns.",
+  "license": "MIT",
+  "author": "Soren083",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Soren083/codex-token-dashboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Soren083/codex-token-dashboard/issues"
+  },
+  "homepage": "https://github.com/Soren083/codex-token-dashboard#readme",
+  "keywords": [
+    "codex",
+    "dashboard",
+    "tokens",
+    "usage",
+    "cost"
+  ],
+  "bin": {
+    "codex-token-dashboard": "./server.mjs"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node tests/smoke.mjs",
+    "install-service": "node scripts/install-launchd.mjs",
+    "uninstall-service": "node scripts/uninstall-launchd.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
